@@ -3,6 +3,8 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
+const multerconfig = require('./config/multer')
+const path = require("path");
 
 // Models
 const usermodel = require('./models/user');
@@ -14,12 +16,18 @@ const app = express();
 app.set("view engine" ,'ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname,"public"))); 
 app.use(cookieParser());
 
 // ---------------------- Page Routes ----------------------
 app.get('/', (req,res) => {
     res.render("index");
 });
+
+app.get("/profile/upload",(req,res)=>
+{
+    res.render('profileupload');
+})
 
 app.get('/login', (req,res) => {
     res.render("login");
@@ -36,6 +44,15 @@ app.get('/edit/:id', isloggedin, async (req,res) => {
 });
 
 // ---------------------- Auth APIs ----------------------
+
+app.post("/upload" , isloggedin, multerconfig.single("image") ,async(req,res)=>
+{
+    let user = await usermodel.findOne({email: req.user.email});
+    user.profilepic = req.file.filename;
+    await user.save();
+    res.redirect("/profile")
+})
+
 app.post("/login", async (req,res) => {
     let { email, password } = req.body;
     let user = await usermodel.findOne({ email });
