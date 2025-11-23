@@ -1,6 +1,6 @@
 # Node.js Auth & Posts App
 
-A mini social media–style web application built using **Node.js, Express, MongoDB, JWT authentication, EJS, and TailwindCSS**.  
+A mini social media–style web application built using **Node.js, Express, MongoDB, JWT authentication, EJS, multer and TailwindCSS**.  
 Users can register, log in, create posts, like/unlike posts, edit posts, and view their profile.
 
 ---
@@ -44,6 +44,7 @@ Users can register, log in, create posts, like/unlike posts, edit posts, and vie
 - Mongoose
 - JWT
 - Bcrypt
+- multer
 
 ### Frontend
 - EJS (server-side templates)
